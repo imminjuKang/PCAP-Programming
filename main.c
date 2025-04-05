@@ -6,9 +6,9 @@
 
 /* Ethernet header */
 struct ethheader {
-    u_char  ether_dhost[6];    /* destination host address */
-    u_char  ether_shost[6];    /* source host address */
-    u_short ether_type;        /* IP? ARP? RARP? etc */
+    u_char  ether_dhost[6];   
+    u_char  ether_shost[6];   
+    u_short ether_type;        
 };
 
 /* IP Header */
@@ -27,8 +27,8 @@ struct ipheader {
 
 /* TCP Header */
 struct tcpheader {
-    u_short tcp_sport;    /* source port */
-    u_short tcp_dport;    /* destination port */
+    u_short tcp_sport;    
+    u_short tcp_dport;   
     u_int   tcp_seq;
     u_int   tcp_ack;
     u_char  tcp_offx2;
@@ -41,7 +41,7 @@ struct tcpheader {
 void got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *packet) {
     struct ethheader *eth = (struct ethheader *)packet;
 
-    if (ntohs(eth->ether_type) == 0x0800) {  // IP packet
+    if (ntohs(eth->ether_type) == 0x0800) {  
         struct ipheader *ip = (struct ipheader *)(packet + sizeof(struct ethheader));
 
         if (ip->iph_protocol == IPPROTO_TCP) {
@@ -68,9 +68,8 @@ int main() {
     struct bpf_program fp;
     char filter_exp[] = "tcp";
     bpf_u_int32 net;
-
-    // 네트워크 인터페이스 이름 확인 (예: enp0s3, eth0 등)
-    char *dev = "enp0s3";  // 필요시 ifconfig로 확인
+    
+    char *dev = "enp0s3";
 
     handle = pcap_open_live(dev, BUFSIZ, 1, 1000, errbuf);
     if (handle == NULL) {
